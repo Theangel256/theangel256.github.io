@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { userConfig } from '../config';
+import ProjectCard from '../components/md3/ProjectCard.astro';
+---
+
+<Layout title="Portafolio">
+  <!-- Hero Section -->
+  <section class="hero container" id="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="greeting">Hola, soy {userConfig.name}.</span>
+      </h1>
+      <p class="hero-subtitle">
+        {userConfig.role}
+      </p>
+      <p class="hero-bio">
+        {userConfig.bio}
+      </p>
+      
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary hero-btn ripple">
+          <span>Ver Proyectos</span>
+          <md-ripple></md-ripple>
+        </a>
+        <a href={userConfig.socials[0].url} class="btn-secondary hero-btn ripple" target="_blank">
+          <span>{userConfig.socials[0].name}</span>
+          <md-ripple></md-ripple>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects container" id="projects">
+    <div class="projects-header">
+      <h2>Experiencias y Proyectos</h2>
+      <p>Explora mi trabajo, inspirado en la fluidez y el dinamismo.</p>
+    </div>
+    
+    <div class="projects-grid" id="projects-grid">
+      {userConfig.projects.map((project, index) => (
+        <ProjectCard project={project} index={index} />
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import '@material/web/ripple/ripple.js';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Animaciones al cargar la página
+  window.addEventListener('load', () => {
+    const tl = gsap.timeline();
+
+    // Animación del Hero
+    tl.fromTo('.hero-title', 
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+    )
+    .fromTo('.hero-subtitle',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
+      "-=0.6"
+    )
+    .fromTo('.hero-bio',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
+      "-=0.6"
+    )
+    .fromTo('.hero-btn',
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" },
+      "-=0.4"
+    );
+
+    // Animación de las tarjetas al hacer scroll (ScrollTrigger)
+    const cards = document.querySelectorAll('.project-card');
+    
+    cards.forEach((card, i) => {
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%", // La animación empieza cuando el top de la tarjeta llega al 85% de la ventana
+          toggleActions: "play none none reverse"
+        },
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: "power2.out"
+      });
+    });
+  });
+</script>
+
+<style>
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 5rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    color: var(--md-sys-color-on-background, #fff);
+  }
+
+  .greeting {
+    background: linear-gradient(135deg, var(--md-sys-color-primary, #80ced6), var(--md-sys-color-tertiary, #d2b4de));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface, #e3e3e3);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-bio {
+    font-size: 1.125rem;
+    color: var(--md-sys-color-on-surface-variant, #c4c7c5);
+    line-height: 1.6;
+    margin-bottom: 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary, .btn-secondary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+    height: 48px;
+    border-radius: 24px;
+    font-weight: 600;
+    font-size: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-primary:active, .btn-secondary:active {
+    transform: scale(0.96);
+  }
+
+  .btn-primary {
+    background-color: var(--md-sys-color-primary, #80ced6);
+    color: var(--md-sys-color-on-primary, #00363a);
+    --md-ripple-hover-color: var(--md-sys-color-on-primary, #000);
+    --md-ripple-pressed-color: var(--md-sys-color-on-primary, #000);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--md-sys-color-outline, #8e918f);
+    color: var(--md-sys-color-primary, #80ced6);
+    --md-ripple-hover-color: var(--md-sys-color-primary, #fff);
+    --md-ripple-pressed-color: var(--md-sys-color-primary, #fff);
+  }
+
+  .projects {
+    padding: 6rem 0;
+  }
+
+  .projects-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .projects-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--md-sys-color-on-surface, #e3e3e3);
+  }
+
+  .projects-header p {
+    color: var(--md-sys-color-on-surface-variant, #c4c7c5);
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .projects {
+      padding: 4rem 0;
+    }
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+</style>

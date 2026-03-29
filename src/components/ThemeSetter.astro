@@ -1,0 +1,124 @@
+---
+// ThemeSetter.astro
+// Este componente establece el color Material 3 en el cliente.
+import { userConfig } from "../config";
+---
+
+<script>
+  import {
+    themeFromSourceColor,
+    applyTheme,
+  } from "@material/material-color-utilities";
+
+  // Obtener la configuración inicial desde el DOM (el div oculto final)
+  // Lo envolvemos en una función porque con Astro Transitions necesitamos leer el div
+  // luego de que cargue el DOM, no cuando el módulo de script se registra.
+  let baseColor: string;
+  let defaultMode: string;
+
+  // Helper para generar el CSS de forma nativa para modo claro y oscuro.
+  // De esta manera apoyamos completamente "dark/light mode" vía puro CSS.
+  function applyPastelTheme(hexColor: string) {
+    const colorInt = parseInt(hexColor.replace("#", ""), 16);
+    const argbColor = colorInt | 0xff000000;
+
+    // Generamos el tema M3 basado en el color seed.
+    const theme = themeFromSourceColor(argbColor);
+
+    // Usamos un elemento de prueba para que M3 calcule las variables.
+    const dummy = document.createElement("div");
+
+    // Extraemos las variables para modo light
+    applyTheme(theme, { target: dummy, dark: false });
+    const lightVariables = dummy.getAttribute("style");
+
+    // Extraemos las variables para modo dark
+    applyTheme(theme, { target: dummy, dark: true });
+    const darkVariables = dummy.getAttribute("style");
+
+    // Construimos la hoja de estilos inyectada
+    const css = `
+      :root {
+        ${lightVariables}
+      }
+      :root.dark {
+        ${darkVariables}
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not(.light) {
+          ${darkVariables}
+        }
+      }
+    `;
+
+    // Lo aplicamos en una etiqueta <style> dinámica en el head
+    let styleTag = document.getElementById("md3-dynamic-theme");
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = "md3-dynamic-theme";
+      document.head.appendChild(styleTag);
+    }
+    styleTag.textContent = css;
+
+    // Opcional: limpiar variables inline puestas anteriormente en documentElement
+    document.documentElement.removeAttribute("style");
+
+    // Inicializar el modo por defecto en HTML usando classList si es necesario
+    if (defaultMode === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }
+
+  const initTheme = () => {
+    // 1. Localizar el div oculto que guarda los datos de la config local
+    const themeData = document.querySelector(
+      "div.hidden[data-theme-color]",
+    ) as HTMLElement | null;
+    baseColor = themeData?.dataset.themeColor || "#80ced6";
+    defaultMode = themeData?.dataset.themeMode || "dark";
+
+    // 2. Aplicar el tema basado en el color encontrado
+    applyPastelTheme(baseColor);
+
+    // Escuchar el input del color picker
+    const picker = document.getElementById(
+      "theme-picker",
+    ) as HTMLInputElement | null;
+    if (picker) {
+      picker.value = baseColor;
+      // Usamos oninput en lugar de addEventListener para evitar duplicados si se recarga el componente
+      picker.oninput = (e) => {
+        const newColor = (e.target as HTMLInputElement).value;
+        applyPastelTheme(newColor);
+      };
+    }
+  };
+
+  // En un proyecto Astro sin ViewTransitions, los scripts se cargan como type="module" (defer),
+  // por lo que el DOM ya existe. Lo ejecutamos directamente:
+  initTheme();
+
+  // Por si decides agregar ViewTransitions al proyecto en el futuro:
+  document.addEventListener("astro:after-swap", initTheme);
+
+  // Animación suave del cambio de tema utilizando TS
+  const style = document.createElement("style");
+  style.innerHTML = `
+    html, body {
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+    * {
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+
+<div
+  class="hidden"
+  data-theme-color={userConfig.theme.baseColor}
+  data-theme-mode={userConfig.theme.defaultMode}
+>
+</div>

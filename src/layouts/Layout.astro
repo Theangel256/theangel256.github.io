@@ -1,0 +1,118 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+import '../styles/global.css';
+import '@fontsource/plus-jakarta-sans/400.css';
+import '@fontsource/plus-jakarta-sans/500.css';
+import '@fontsource/plus-jakarta-sans/700.css';
+import ThemeSetter from '../components/ThemeSetter.astro';
+import { userConfig } from '../config';
+---
+
+<!DOCTYPE html>
+<html lang="es" class={userConfig.theme.defaultMode} data-theme-color={userConfig.theme.baseColor}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={userConfig.bio} />
+    <title>{title} | {userConfig.name}</title>
+    <!-- MWC Material Icons Option -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    {/* ThemeSetter will inject the material color styles immediately based on the data attributes */}
+    <ThemeSetter />
+  </head>
+  <body style="background-color: var(--md-sys-color-background, #121212); color: var(--md-sys-color-on-background, #fff); transition: background-color 0.5s ease;">
+    <!-- Navbar global -->
+    <header class="navbar">
+      <div class="navbar-content">
+        <a href="#" class="brand">{userConfig.name} / {userConfig.role.split(' ')[0]}</a>
+        <div class="actions">
+          <label for="theme-picker" class="theme-label" title="Personaliza el tema Material 3">
+            <span class="material-symbols-outlined">palette</span>
+            <input type="color" id="theme-picker" value={userConfig.theme.baseColor} />
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-container">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <p>&copy; {new Date().getFullYear()} {userConfig.name}. Adaptado del diseño de PixelOS.</p>
+    </footer>
+
+    <style>
+      .navbar {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 50;
+        background-color: var(--md-sys-color-surface-container, rgba(30, 30, 30, 0.8));
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--md-sys-color-outline-variant, #333);
+      }
+      .navbar-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .brand {
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: -0.02em;
+        color: var(--md-sys-color-on-surface, #fff);
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .theme-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: var(--md-sys-color-secondary-container, #324144);
+        color: var(--md-sys-color-on-secondary-container, #cce8eb);
+        transition: 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .theme-label:hover {
+        background-color: var(--md-sys-color-primary, #80ced6);
+        color: var(--md-sys-color-on-primary, #00363a);
+      }
+      input[type="color"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+      .page-container {
+        padding-top: 80px;
+        min-height: calc(100vh - 150px);
+      }
+      .footer {
+        text-align: center;
+        padding: 2rem;
+        background-color: var(--md-sys-color-surface-container-high, #212121);
+        color: var(--md-sys-color-on-surface-variant, #cacaca);
+        font-size: 0.875rem;
+      }
+    </style>
+  </body>
+</html>
