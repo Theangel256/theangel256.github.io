@@ -10,104 +10,204 @@ const { portrait, hexagons } = Astro.props;
 ---
 
 <div class="hero-visual" data-hero-visual>
+  <div class="hero-visual__aurora" data-hero-aurora aria-hidden="true"></div>
   <div class="hero-visual__backdrop" data-hero-backdrop aria-hidden="true"></div>
+  <div class="hero-visual__mesh" data-hero-mesh aria-hidden="true"></div>
+
+  <div class="hero-visual__orbit hero-visual__orbit--outer" data-hero-orbit aria-hidden="true"></div>
+  <div class="hero-visual__orbit hero-visual__orbit--inner" data-hero-orbit aria-hidden="true"></div>
 
   {hexagons.map((hexagon) => (
     <div
       class:list={[
-        'hero-hexagon',
-        `hero-hexagon--${hexagon.tone}`,
-        !hexagon.mobile && 'hero-hexagon--desktop-only',
+        'hero-surface-chip',
+        `hero-surface-chip--${hexagon.tone}`,
+        !hexagon.mobile && 'hero-surface-chip--desktop-only',
       ]}
-      data-hero-hex
+      data-hero-chip
       data-depth={hexagon.depth}
       aria-label={hexagon.label}
-      style={`--hex-size:${hexagon.size}; --hex-rotation:${hexagon.rotation}; --hex-x:${hexagon.offsetX}; --hex-y:${hexagon.offsetY};`}
+      style={`--chip-size:${hexagon.size}; --chip-x:${hexagon.offsetX}; --chip-y:${hexagon.offsetY}; --chip-rotation:${hexagon.rotation};`}
     >
-      <span>{hexagon.label}</span>
+      <md-assist-chip label={hexagon.label}></md-assist-chip>
     </div>
   ))}
 
+  <div class="hero-panel hero-panel--top" data-hero-panel>
+    <p>Accent Sync</p>
+    <strong>Color reactivo</strong>
+  </div>
+
+  <div class="hero-panel hero-panel--bottom" data-hero-panel>
+    <p>Motion Layer</p>
+    <strong>Depth + orbit</strong>
+  </div>
+
   <figure class="hero-portrait" data-hero-portrait>
     <div class="hero-portrait__glow" data-hero-glow aria-hidden="true"></div>
-    <div class="hero-portrait__frame">
-      <img src={portrait.src} alt={portrait.alt} loading="eager" decoding="async" />
+    <div class="hero-portrait__shell">
+      <div class="hero-portrait__halo" aria-hidden="true"></div>
+      <div class="hero-portrait__frame">
+        <img src={portrait.src} alt={portrait.alt} loading="eager" decoding="async" />
+      </div>
     </div>
     <figcaption>{portrait.badge}</figcaption>
   </figure>
 </div>
 
+<script>
+  import '@material/web/chips/assist-chip.js';
+</script>
+
 <style>
   .hero-visual {
     position: relative;
-    min-height: clamp(25rem, 44vw, 37rem);
+    min-height: clamp(24rem, 42vw, 36rem);
     isolation: isolate;
+  }
+
+  .hero-visual__aurora {
+    position: absolute;
+    inset: 6% 8% 2%;
+    border-radius: 2.8rem;
+    background:
+      radial-gradient(circle at 36% 18%, color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent) 0%, transparent 24%),
+      radial-gradient(circle at 76% 30%, color-mix(in srgb, var(--md-sys-color-tertiary) 16%, transparent) 0%, transparent 22%),
+      radial-gradient(circle at 58% 82%, color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent) 0%, transparent 24%);
+    filter: blur(54px) saturate(1.1);
+    opacity: 0.8;
+    will-change: transform, opacity, filter;
   }
 
   .hero-visual__backdrop {
     position: absolute;
-    inset: 12% 8% 8%;
-    border-radius: 2.25rem;
+    inset: 10% 6% 8%;
+    border-radius: 2rem;
     background:
-      radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent) 0%, transparent 40%),
-      radial-gradient(circle at 80% 30%, color-mix(in srgb, var(--md-sys-color-tertiary) 16%, transparent) 0%, transparent 34%),
-      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container) 70%, transparent 30%), color-mix(in srgb, var(--md-sys-color-surface-container-high) 80%, transparent 20%));
-    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent 28%);
-    filter: saturate(1.1);
+      radial-gradient(circle at 44% 44%, color-mix(in srgb, var(--md-sys-color-primary) 9%, transparent) 0%, transparent 30%),
+      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-high) 22%, transparent 78%), color-mix(in srgb, var(--md-sys-color-surface-container-low) 34%, transparent 66%));
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 28%, transparent 72%);
+    filter: saturate(1.05);
     will-change: transform, opacity, filter;
   }
 
-  .hero-hexagon,
-  .hero-portrait__frame,
-  .hero-portrait__glow {
-    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+  .hero-visual__mesh {
+    position: absolute;
+    inset: 14% 10% 12%;
+    border-radius: 2rem;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--md-sys-color-outline-variant) 16%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--md-sys-color-outline-variant) 14%, transparent) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    opacity: 0.18;
+    mask-image: radial-gradient(circle at 62% 58%, black 34%, transparent 82%);
   }
 
-  .hero-hexagon {
+  .hero-visual__orbit {
     position: absolute;
-    left: var(--hex-x);
-    top: var(--hex-y);
-    width: var(--hex-size);
+    left: 58%;
+    top: 56%;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 52%, transparent 48%);
+    transform: translate(-50%, -50%);
+    opacity: 0.42;
+    will-change: transform;
+  }
+
+  .hero-visual__orbit--outer {
+    width: min(72%, 19rem);
     aspect-ratio: 1 / 1;
-    display: grid;
-    place-items: center;
-    padding: 0.75rem;
-    transform: translate(-50%, -50%) rotate(var(--hex-rotation));
-    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 72%, transparent 28%);
-    backdrop-filter: blur(18px);
-    box-shadow: var(--shadow-soft);
+  }
+
+  .hero-visual__orbit--inner {
+    width: min(54%, 14rem);
+    aspect-ratio: 1 / 1;
+    border-style: dashed;
+  }
+
+  .hero-surface-chip {
+    position: absolute;
+    left: var(--chip-x);
+    top: var(--chip-y);
+    width: min(var(--chip-size), 6.75rem);
+    transform: translate(-50%, -50%) rotate(var(--chip-rotation));
     will-change: transform, opacity;
   }
 
-  .hero-hexagon span {
-    color: var(--md-sys-color-on-surface);
-    font-size: 0.78rem;
+  .hero-surface-chip md-assist-chip {
+    width: 100%;
+    --md-assist-chip-container-shape: var(--shape-pill);
+    --md-assist-chip-label-text-size: 0.74rem;
+    --md-assist-chip-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 64%, transparent 36%);
+  }
+
+  .hero-surface-chip--primary md-assist-chip {
+    --md-assist-chip-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 82%, transparent 18%);
+    --md-assist-chip-label-text-color: var(--md-sys-color-on-primary-container);
+  }
+
+  .hero-surface-chip--secondary md-assist-chip {
+    --md-assist-chip-container-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 82%, transparent 18%);
+    --md-assist-chip-label-text-color: var(--md-sys-color-on-secondary-container);
+  }
+
+  .hero-surface-chip--tertiary md-assist-chip {
+    --md-assist-chip-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 82%, transparent 18%);
+    --md-assist-chip-label-text-color: var(--md-sys-color-on-tertiary-container);
+  }
+
+  .hero-surface-chip--surface md-assist-chip {
+    --md-assist-chip-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 92%, transparent 8%);
+    --md-assist-chip-label-text-color: var(--md-sys-color-on-surface);
+  }
+
+  .hero-panel {
+    position: absolute;
+    display: grid;
+    gap: 0.18rem;
+    max-width: 8rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 1rem;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-high) 62%, transparent 38%), color-mix(in srgb, var(--md-sys-color-surface-container) 76%, transparent 24%));
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent 30%);
+    backdrop-filter: blur(10px);
+    will-change: transform, opacity;
+  }
+
+  .hero-panel p,
+  .hero-panel strong {
+    margin: 0;
+  }
+
+  .hero-panel p {
+    color: var(--md-sys-color-primary);
+    font-size: 0.66rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    opacity: 0.88;
   }
 
-  .hero-hexagon--primary {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-primary-container) 78%, transparent 22%), color-mix(in srgb, var(--md-sys-color-primary) 18%, var(--md-sys-color-surface-container-high) 82%));
+  .hero-panel strong {
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.85rem;
+    line-height: 1.3;
   }
 
-  .hero-hexagon--secondary {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-secondary-container) 80%, transparent 20%), color-mix(in srgb, var(--md-sys-color-secondary) 14%, var(--md-sys-color-surface-container) 86%));
+  .hero-panel--top {
+    right: 8%;
+    top: 16%;
   }
 
-  .hero-hexagon--tertiary {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-tertiary-container) 80%, transparent 20%), color-mix(in srgb, var(--md-sys-color-tertiary) 16%, var(--md-sys-color-surface-container-high) 84%));
-  }
-
-  .hero-hexagon--surface {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-highest) 94%, transparent 6%), color-mix(in srgb, var(--md-sys-color-surface-container-low) 90%, transparent 10%));
+  .hero-panel--bottom {
+    left: 18%;
+    bottom: 17%;
   }
 
   .hero-portrait {
     position: absolute;
-    inset: 50% auto auto 50%;
-    width: min(80%, 25rem);
+    inset: 57% auto auto 57%;
+    width: min(56%, 16rem);
     margin: 0;
     transform: translate(-50%, -50%);
     will-change: transform, opacity;
@@ -115,40 +215,60 @@ const { portrait, hexagons } = Astro.props;
 
   .hero-portrait__glow {
     position: absolute;
-    inset: 6%;
+    inset: 8%;
     background: linear-gradient(135deg, color-mix(in srgb, var(--md-sys-color-primary) 42%, transparent), color-mix(in srgb, var(--md-sys-color-tertiary) 30%, transparent));
-    filter: blur(26px);
-    opacity: 0.75;
-    transform: translateY(10%);
+    filter: blur(34px);
+    opacity: 0.72;
+    transform: translateY(8%);
     will-change: transform, opacity, filter;
   }
 
-  .hero-portrait__frame {
+  .hero-portrait__shell {
     position: relative;
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 70%, transparent 30%);
+    padding: 0.8rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
     background:
-      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, transparent 18%), color-mix(in srgb, var(--md-sys-color-surface-container-lowest) 92%, transparent 8%));
-    box-shadow: 0 32px 70px rgba(0, 0, 0, 0.24);
+      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-highest) 92%, transparent 8%), color-mix(in srgb, var(--md-sys-color-surface-container-low) 86%, transparent 14%));
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 68%, transparent 32%);
+    box-shadow: 0 28px 56px rgba(0, 0, 0, 0.22);
+  }
+
+  .hero-portrait__halo {
+    position: absolute;
+    inset: 0.7rem;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 38%, transparent 62%);
+  }
+
+  .hero-portrait__frame {
+    position: absolute;
+    inset: 0.85rem;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 58%, transparent 42%);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-high) 84%, transparent 16%), color-mix(in srgb, var(--md-sys-color-surface-container-lowest) 96%, transparent 4%));
   }
 
   .hero-portrait img {
     display: block;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     object-fit: cover;
-    transform: scale(1.02);
+    object-position: center 34%;
+    transform: scale(1.08);
   }
 
   .hero-portrait figcaption {
     width: fit-content;
-    margin: 1rem auto 0;
-    padding: 0.55rem 1rem;
+    margin: 0.8rem auto 0;
+    padding: 0.5rem 0.9rem;
     border-radius: var(--shape-pill);
     background-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, transparent 18%);
     border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent 28%);
     color: var(--md-sys-color-on-surface-variant);
-    font-size: 0.82rem;
+    font-size: 0.74rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -160,7 +280,12 @@ const { portrait, hexagons } = Astro.props;
     }
 
     .hero-portrait {
-      width: min(88%, 21rem);
+      inset: 58% auto auto 56%;
+      width: min(64%, 15rem);
+    }
+
+    .hero-panel {
+      max-width: 7.5rem;
     }
   }
 
@@ -170,16 +295,18 @@ const { portrait, hexagons } = Astro.props;
     }
 
     .hero-visual__backdrop {
-      inset: 10% 0 0;
+      inset: 6% 0 0;
       border-radius: 1.75rem;
     }
 
-    .hero-hexagon--desktop-only {
+    .hero-surface-chip--desktop-only,
+    .hero-panel {
       display: none;
     }
 
     .hero-portrait {
-      width: min(100%, 18rem);
+      inset: 56% auto auto 50%;
+      width: min(74%, 13.75rem);
     }
   }
 </style>

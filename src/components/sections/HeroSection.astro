@@ -22,6 +22,12 @@ const highlightedTitle = hero.title.replace(
     <p class="hero-section__subtitle" data-hero-item>{hero.subtitle}</p>
     <p class="hero-section__description" data-hero-item>{hero.description}</p>
 
+    <div class="hero-section__badges" data-hero-item>
+      {hero.badges.map((badge) => (
+        <md-assist-chip label={badge.label} data-hero-badge></md-assist-chip>
+      ))}
+    </div>
+
     <div class="hero-section__actions" data-hero-item>
       {hero.ctas.map((cta) => (
         <ButtonLink
@@ -30,16 +36,17 @@ const highlightedTitle = hero.title.replace(
           variant={cta.variant}
           target={cta.target}
           fullWidthOnMobile={true}
+          dataHeroButton={true}
         />
       ))}
     </div>
 
     <dl class="hero-section__meta" data-hero-item>
-      <div>
+      <div data-hero-meta>
         <dt>Nombre</dt>
         <dd>{name}</dd>
       </div>
-      <div>
+      <div data-hero-meta>
         <dt>Especialidad</dt>
         <dd>Interfaces, motion y systems thinking</dd>
       </div>
@@ -51,8 +58,13 @@ const highlightedTitle = hero.title.replace(
   </div>
 </section>
 
+<script>
+  import '@material/web/chips/assist-chip.js';
+</script>
+
 <style>
   .hero-section {
+    position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1.02fr) minmax(18rem, 0.98fr);
     gap: clamp(2rem, 4vw, 4.5rem);
@@ -62,6 +74,8 @@ const highlightedTitle = hero.title.replace(
   }
 
   .hero-section__copy {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: 1.25rem;
     max-width: 40rem;
@@ -108,6 +122,19 @@ const highlightedTitle = hero.title.replace(
     line-height: 1.75;
   }
 
+  .hero-section__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 0.15rem;
+  }
+
+  .hero-section__badges md-assist-chip {
+    --md-assist-chip-container-shape: var(--shape-pill);
+    --md-assist-chip-container-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 78%, transparent 22%);
+    --md-assist-chip-label-text-color: var(--md-sys-color-on-secondary-container);
+  }
+
   .hero-section__actions {
     display: flex;
     flex-wrap: wrap;
@@ -126,7 +153,8 @@ const highlightedTitle = hero.title.replace(
   .hero-section__meta div {
     padding: 1rem 1.1rem;
     border-radius: var(--shape-large);
-    background-color: color-mix(in srgb, var(--md-sys-color-surface-container) 78%, transparent 22%);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-high) 70%, transparent 30%), color-mix(in srgb, var(--md-sys-color-surface-container-low) 82%, transparent 18%));
     border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent 28%);
     box-shadow: var(--shadow-soft);
   }
@@ -172,6 +200,10 @@ const highlightedTitle = hero.title.replace(
     }
 
     .hero-section__actions {
+      justify-content: center;
+    }
+
+    .hero-section__badges {
       justify-content: center;
     }
 

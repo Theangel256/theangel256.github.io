@@ -11,6 +11,10 @@
   --motion-slow: 520ms;
   --shadow-soft: 0 16px 36px rgba(0, 0, 0, 0.12);
   --z-header: 40;
+  --ambient-x: 50%;
+  --ambient-y: 18%;
+  --ambient-drift-x: 0px;
+  --ambient-drift-y: 0px;
 }
 
 html {
@@ -21,15 +25,49 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   min-width: 320px;
   overflow-x: clip;
   background:
-    radial-gradient(circle at top, color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent) 0%, transparent 32%),
-    linear-gradient(180deg, var(--md-sys-color-background) 0%, color-mix(in srgb, var(--md-sys-color-surface) 84%, black 16%) 100%);
+    radial-gradient(circle at var(--ambient-x) var(--ambient-y), color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent) 0%, transparent 42%),
+    radial-gradient(circle at 82% 22%, color-mix(in srgb, var(--md-sys-color-tertiary) 10%, transparent) 0%, transparent 28%),
+    linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-background) 94%, black 6%) 0%, color-mix(in srgb, var(--md-sys-color-surface) 84%, black 16%) 100%);
   color: var(--md-sys-color-on-background);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition:
+    opacity var(--motion-medium) ease,
+    transform var(--motion-medium) ease;
+}
+
+body::before {
+  opacity: 1;
+  background:
+    radial-gradient(circle at var(--ambient-x) var(--ambient-y), color-mix(in srgb, var(--md-sys-color-primary) 26%, transparent) 0%, transparent 26%),
+    radial-gradient(circle at calc(var(--ambient-x) + 22%) calc(var(--ambient-y) + 32%), color-mix(in srgb, var(--md-sys-color-tertiary) 18%, transparent) 0%, transparent 28%),
+    radial-gradient(circle at 15% 78%, color-mix(in srgb, var(--md-sys-color-secondary) 12%, transparent) 0%, transparent 24%);
+  filter: blur(44px) saturate(1.18);
+  transform: translate3d(var(--ambient-drift-x), var(--ambient-drift-y), 0);
+}
+
+body::after {
+  opacity: 0.68;
+  background:
+    linear-gradient(115deg, color-mix(in srgb, var(--md-sys-color-surface-container-lowest) 84%, transparent 16%), transparent 44%),
+    radial-gradient(circle at 82% 16%, color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent) 0%, transparent 22%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--md-sys-color-outline-variant) 8%, transparent) 0%, transparent 52%);
+  mask-image:
+    linear-gradient(180deg, black 0%, rgba(0, 0, 0, 0.96) 68%, rgba(0, 0, 0, 0.84) 100%);
 }
 
 *,

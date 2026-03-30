@@ -17,6 +17,11 @@ export interface HeroPortraitConfig {
   badge: string;
 }
 
+export interface HeroBadgeConfig {
+  id: string;
+  label: string;
+}
+
 export interface HeroHexagonConfig {
   id: string;
   size: string;
@@ -56,6 +61,7 @@ export interface UserConfig {
     titleAccent: string;
     subtitle: string;
     description: string;
+    badges: HeroBadgeConfig[];
     ctas: HeroCta[];
     portrait: HeroPortraitConfig;
     hexagons: HeroHexagonConfig[];
@@ -83,6 +89,11 @@ export const userConfig: UserConfig = {
     subtitle: 'Senior UX/UI Designer & Developer',
     description:
       'Diseno y desarrollo productos visuales con jerarquia fuerte, animaciones fluidas y sistemas que se sienten nativos tanto en movil como en desktop.',
+    badges: [
+      { id: 'badge-motion', label: 'GSAP Motion' },
+      { id: 'badge-material', label: 'Material 3' },
+      { id: 'badge-adaptive', label: 'Adaptive UI' },
+    ],
     ctas: [
       {
         label: 'Ver proyectos',
@@ -115,17 +126,6 @@ export const userConfig: UserConfig = {
         label: 'Motion',
       },
       {
-        id: 'system',
-        size: 'clamp(4.75rem, 9vw, 7rem)',
-        tone: 'secondary',
-        rotation: '12deg',
-        offsetX: '76%',
-        offsetY: '20%',
-        depth: 0.22,
-        mobile: false,
-        label: 'System',
-      },
-      {
         id: 'accent',
         size: 'clamp(4rem, 8vw, 6rem)',
         tone: 'tertiary',
@@ -135,17 +135,6 @@ export const userConfig: UserConfig = {
         depth: 0.18,
         mobile: true,
         label: 'Depth',
-      },
-      {
-        id: 'surface',
-        size: 'clamp(3.75rem, 7vw, 5.5rem)',
-        tone: 'surface',
-        rotation: '-14deg',
-        offsetX: '18%',
-        offsetY: '76%',
-        depth: 0.14,
-        mobile: false,
-        label: 'Scale',
       },
     ],
   },

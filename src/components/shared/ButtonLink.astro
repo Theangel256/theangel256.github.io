@@ -5,6 +5,7 @@ interface Props {
   variant?: 'primary' | 'secondary';
   target?: '_blank' | '_self';
   fullWidthOnMobile?: boolean;
+  dataHeroButton?: boolean;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   variant = 'primary',
   target = '_self',
   fullWidthOnMobile = false,
+  dataHeroButton = false,
 } = Astro.props;
 
 const rel = target === '_blank' ? 'noreferrer noopener' : undefined;
@@ -23,6 +25,7 @@ const rel = target === '_blank' ? 'noreferrer noopener' : undefined;
   class:list={['button-link', `button-link--${variant}`, fullWidthOnMobile && 'button-link--mobile-full']}
   target={target}
   rel={rel}
+  data-hero-button={dataHeroButton ? 'true' : undefined}
 >
   <span>{label}</span>
   <md-ripple></md-ripple>
