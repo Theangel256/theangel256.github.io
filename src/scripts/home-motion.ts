@@ -1,11 +1,14 @@
 import { HeroMotionController } from './hero-motion';
 import { SectionRevealController } from './section-reveal';
+import { userConfig } from '../site-config';
 
 let heroController: HeroMotionController | null = null;
 let revealController: SectionRevealController | null = null;
 let initialized = false;
 
 function mount() {
+  document.documentElement.dataset.motionStatus = 'mounting';
+
   heroController?.destroy();
   revealController?.destroy();
 
@@ -14,9 +17,22 @@ function mount() {
 
   heroController.init();
   revealController.init();
+
+  document.documentElement.dataset.motionStatus = 'ready';
 }
 
 export function initHomePageMotion() {
+  if (!userConfig.motion.enabled) {
+    return;
+  }
+
+  if (
+    userConfig.motion.respectReducedMotion &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
+    return;
+  }
+
   if (!initialized) {
     document.addEventListener('astro:after-swap', mount);
     window.addEventListener('beforeunload', () => {

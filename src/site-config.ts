@@ -42,6 +42,10 @@ export interface UserConfig {
   name: string;
   role: string;
   bio: string;
+  motion: {
+    enabled: boolean;
+    respectReducedMotion: boolean;
+  };
   theme: {
     baseColor: string;
     defaultMode: 'light' | 'dark';
@@ -64,6 +68,10 @@ export const userConfig: UserConfig = {
   name: 'Angel Amarillas',
   role: 'Senior UX/UI Designer & Developer',
   bio: 'Especialista en interfaces modernas, motion systems con GSAP y experiencias adaptativas inspiradas en Material 3.',
+  motion: {
+    enabled: true,
+    respectReducedMotion: false,
+  },
   theme: {
     baseColor: '#d11fb0',
     defaultMode: 'dark',

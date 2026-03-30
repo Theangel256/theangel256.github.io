@@ -1,18 +1,11 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { userConfig } from '../site-config';
-import HeroSection from '../components/sections/HeroSection.astro';
-import ProjectsSection from '../components/sections/ProjectsSection.astro';
+import Layout from "../layouts/Layout.astro";
+import { userConfig } from "../site-config";
+import HeroSection from "../components/sections/HeroSection.astro";
+import ProjectsSection from "../components/sections/ProjectsSection.astro";
 ---
 
 <Layout title="Portafolio">
   <HeroSection hero={userConfig.hero} name={userConfig.name} />
   <ProjectsSection projects={userConfig.projects} />
 </Layout>
-
-<script>
-  import { initHomePageMotion } from '../scripts/home-motion';
-  import '@material/web/ripple/ripple.js';
-
-  initHomePageMotion();
-</script>

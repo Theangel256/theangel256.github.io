@@ -1,4 +1,5 @@
 import { getGsap } from './gsap-core';
+import { userConfig } from '../site-config';
 
 interface SectionRevealOptions {
   selector: string;
@@ -15,7 +16,14 @@ export class SectionRevealController {
   init() {
     const cards = Array.from(document.querySelectorAll<HTMLElement>(this.selector));
 
-    if (!cards.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!cards.length) {
+      return;
+    }
+
+    if (
+      userConfig.motion.respectReducedMotion &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       return;
     }
 

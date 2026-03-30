@@ -1,4 +1,5 @@
 import { getGsap } from './gsap-core';
+import { userConfig } from '../site-config';
 
 interface HeroMotionOptions {
   rootSelector: string;
@@ -15,7 +16,14 @@ export class HeroMotionController {
   init() {
     const root = document.querySelector<HTMLElement>(this.rootSelector);
 
-    if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!root) {
+      return;
+    }
+
+    if (
+      userConfig.motion.respectReducedMotion &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
       return;
     }
 
