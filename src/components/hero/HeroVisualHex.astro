@@ -1,0 +1,185 @@
+---
+import type { HeroHexagonConfig, HeroPortraitConfig } from '../../site-config';
+
+interface Props {
+  portrait: HeroPortraitConfig;
+  hexagons: HeroHexagonConfig[];
+}
+
+const { portrait, hexagons } = Astro.props;
+---
+
+<div class="hero-visual" data-hero-visual>
+  <div class="hero-visual__backdrop" data-hero-backdrop aria-hidden="true"></div>
+
+  {hexagons.map((hexagon) => (
+    <div
+      class:list={[
+        'hero-hexagon',
+        `hero-hexagon--${hexagon.tone}`,
+        !hexagon.mobile && 'hero-hexagon--desktop-only',
+      ]}
+      data-hero-hex
+      data-depth={hexagon.depth}
+      aria-label={hexagon.label}
+      style={`--hex-size:${hexagon.size}; --hex-rotation:${hexagon.rotation}; --hex-x:${hexagon.offsetX}; --hex-y:${hexagon.offsetY};`}
+    >
+      <span>{hexagon.label}</span>
+    </div>
+  ))}
+
+  <figure class="hero-portrait" data-hero-portrait>
+    <div class="hero-portrait__glow" data-hero-glow aria-hidden="true"></div>
+    <div class="hero-portrait__frame">
+      <img src={portrait.src} alt={portrait.alt} loading="eager" decoding="async" />
+    </div>
+    <figcaption>{portrait.badge}</figcaption>
+  </figure>
+</div>
+
+<style>
+  .hero-visual {
+    position: relative;
+    min-height: clamp(25rem, 44vw, 37rem);
+    isolation: isolate;
+  }
+
+  .hero-visual__backdrop {
+    position: absolute;
+    inset: 12% 8% 8%;
+    border-radius: 2.25rem;
+    background:
+      radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent) 0%, transparent 40%),
+      radial-gradient(circle at 80% 30%, color-mix(in srgb, var(--md-sys-color-tertiary) 16%, transparent) 0%, transparent 34%),
+      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container) 70%, transparent 30%), color-mix(in srgb, var(--md-sys-color-surface-container-high) 80%, transparent 20%));
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent 28%);
+    filter: saturate(1.1);
+    will-change: transform, opacity, filter;
+  }
+
+  .hero-hexagon,
+  .hero-portrait__frame,
+  .hero-portrait__glow {
+    clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+  }
+
+  .hero-hexagon {
+    position: absolute;
+    left: var(--hex-x);
+    top: var(--hex-y);
+    width: var(--hex-size);
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    padding: 0.75rem;
+    transform: translate(-50%, -50%) rotate(var(--hex-rotation));
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 72%, transparent 28%);
+    backdrop-filter: blur(18px);
+    box-shadow: var(--shadow-soft);
+    will-change: transform, opacity;
+  }
+
+  .hero-hexagon span {
+    color: var(--md-sys-color-on-surface);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.88;
+  }
+
+  .hero-hexagon--primary {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-primary-container) 78%, transparent 22%), color-mix(in srgb, var(--md-sys-color-primary) 18%, var(--md-sys-color-surface-container-high) 82%));
+  }
+
+  .hero-hexagon--secondary {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-secondary-container) 80%, transparent 20%), color-mix(in srgb, var(--md-sys-color-secondary) 14%, var(--md-sys-color-surface-container) 86%));
+  }
+
+  .hero-hexagon--tertiary {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-tertiary-container) 80%, transparent 20%), color-mix(in srgb, var(--md-sys-color-tertiary) 16%, var(--md-sys-color-surface-container-high) 84%));
+  }
+
+  .hero-hexagon--surface {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-highest) 94%, transparent 6%), color-mix(in srgb, var(--md-sys-color-surface-container-low) 90%, transparent 10%));
+  }
+
+  .hero-portrait {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: min(80%, 25rem);
+    margin: 0;
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity;
+  }
+
+  .hero-portrait__glow {
+    position: absolute;
+    inset: 6%;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--md-sys-color-primary) 42%, transparent), color-mix(in srgb, var(--md-sys-color-tertiary) 30%, transparent));
+    filter: blur(26px);
+    opacity: 0.75;
+    transform: translateY(10%);
+    will-change: transform, opacity, filter;
+  }
+
+  .hero-portrait__frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 70%, transparent 30%);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, transparent 18%), color-mix(in srgb, var(--md-sys-color-surface-container-lowest) 92%, transparent 8%));
+    box-shadow: 0 32px 70px rgba(0, 0, 0, 0.24);
+  }
+
+  .hero-portrait img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transform: scale(1.02);
+  }
+
+  .hero-portrait figcaption {
+    width: fit-content;
+    margin: 1rem auto 0;
+    padding: 0.55rem 1rem;
+    border-radius: var(--shape-pill);
+    background-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 82%, transparent 18%);
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, transparent 28%);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 920px) {
+    .hero-visual {
+      min-height: clamp(22rem, 70vw, 30rem);
+    }
+
+    .hero-portrait {
+      width: min(88%, 21rem);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .hero-visual {
+      min-height: 24rem;
+    }
+
+    .hero-visual__backdrop {
+      inset: 10% 0 0;
+      border-radius: 1.75rem;
+    }
+
+    .hero-hexagon--desktop-only {
+      display: none;
+    }
+
+    .hero-portrait {
+      width: min(100%, 18rem);
+    }
+  }
+</style>

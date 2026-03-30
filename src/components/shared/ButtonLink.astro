@@ -1,0 +1,87 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'primary' | 'secondary';
+  target?: '_blank' | '_self';
+  fullWidthOnMobile?: boolean;
+}
+
+const {
+  href,
+  label,
+  variant = 'primary',
+  target = '_self',
+  fullWidthOnMobile = false,
+} = Astro.props;
+
+const rel = target === '_blank' ? 'noreferrer noopener' : undefined;
+---
+
+<a
+  href={href}
+  class:list={['button-link', `button-link--${variant}`, fullWidthOnMobile && 'button-link--mobile-full']}
+  target={target}
+  rel={rel}
+>
+  <span>{label}</span>
+  <md-ripple></md-ripple>
+</a>
+
+<style>
+  .button-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-width: 10.5rem;
+    min-height: 3.25rem;
+    padding: 0.9rem 1.5rem;
+    border-radius: var(--shape-pill);
+    border: 1px solid transparent;
+    overflow: clip;
+    font-size: 0.97rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      transform var(--motion-fast) ease,
+      border-color var(--motion-fast) ease,
+      background-color var(--motion-fast) ease,
+      color var(--motion-fast) ease,
+      box-shadow var(--motion-fast) ease;
+    will-change: transform;
+  }
+
+  .button-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .button-link:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .button-link--primary {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--md-sys-color-primary) 84%, white 16%), color-mix(in srgb, var(--md-sys-color-tertiary) 78%, transparent 22%));
+    color: var(--md-sys-color-on-primary);
+    box-shadow: var(--shadow-soft);
+    --md-ripple-hover-color: var(--md-sys-color-on-primary);
+    --md-ripple-pressed-color: var(--md-sys-color-on-primary);
+  }
+
+  .button-link--secondary {
+    border-color: color-mix(in srgb, var(--md-sys-color-outline) 74%, transparent 26%);
+    background-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 72%, transparent 28%);
+    color: var(--md-sys-color-primary);
+    --md-ripple-hover-color: var(--md-sys-color-primary);
+    --md-ripple-pressed-color: var(--md-sys-color-primary);
+  }
+
+  @media (max-width: 720px) {
+    .button-link--mobile-full {
+      width: 100%;
+    }
+  }
+</style>

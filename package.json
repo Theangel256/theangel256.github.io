@@ -1,7 +1,20 @@
 {
-  "name": "lonely-limit",
+  "name": "theangel256.github.io",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.5",
+  "description": "my personal website",
+  "author": "theangel256",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theangel256/theangel256.github.io"
+  },
+  "keywords": [
+    "astro",
+    "personal",
+    "website",
+    "theangel256"
+  ],
   "engines": {
     "node": ">=22.12.0"
   },

@@ -1,0 +1,64 @@
+---
+import type { ProjectConfig } from '../../site-config';
+import ProjectCard from '../md3/ProjectCard.astro';
+import SectionHeading from '../shared/SectionHeading.astro';
+
+interface Props {
+  projects: ProjectConfig[];
+}
+
+const { projects } = Astro.props;
+---
+
+<section class="projects-section shell" id="projects" data-projects-section>
+  <SectionHeading
+    eyebrow="Trabajo seleccionado"
+    title="Experiencias y proyectos con foco en ritmo, claridad y performance."
+    description="Una seleccion de interfaces y sistemas visuales donde la composicion, la accesibilidad y el motion ayudan a comunicar mejor."
+    align="center"
+  />
+
+  <div class="projects-section__grid">
+    {projects.map((project, index) => (
+      <ProjectCard project={project} index={index} />
+    ))}
+  </div>
+</section>
+
+<style>
+  .projects-section {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    padding-block: clamp(2rem, 3vw, 3rem) 6rem;
+  }
+
+  .projects-section__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .projects-section__grid :global(.project-card) {
+    grid-column: span 4;
+  }
+
+  @media (max-width: 1080px) {
+    .projects-section__grid :global(.project-card) {
+      grid-column: span 6;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .projects-section {
+      padding-bottom: 4rem;
+    }
+
+    .projects-section__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .projects-section__grid :global(.project-card) {
+      grid-column: auto;
+    }
+  }
+</style>
