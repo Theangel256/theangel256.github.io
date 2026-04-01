@@ -109,9 +109,9 @@ export const userConfig: UserConfig = {
       },
     ],
     portrait: {
-      src: '/assets/hero/portrait-placeholder.svg',
-      alt: 'Placeholder para la foto de presentacion del portfolio',
-      badge: 'Foto de presentacion',
+      src: '/assets/hero/portrait.png',
+      alt: 'Foto de presentacion del portfolio',
+      badge: 'Foto de perfil',
     },
     hexagons: [
       {
