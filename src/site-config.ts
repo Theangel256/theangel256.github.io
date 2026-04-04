@@ -72,8 +72,8 @@ export interface UserConfig {
 
 export const userConfig: UserConfig = {
   name: 'Angel Amarillas',
-  role: 'Senior UX/UI Designer & Developer',
-  bio: 'Especialista en interfaces modernas, motion systems con GSAP y experiencias adaptativas inspiradas en Material 3.',
+  role: 'Full-Stack Developer',
+  bio: 'Desarrollador Full-Stack con experiencia en el desarrollo de aplicaciones web y móviles. Me gusta crear productos visuales con jerarquia fuerte, animaciones fluidas y sistemas que se sienten nativos tanto en movil como en desktop.',
   motion: {
     enabled: true,
     respectReducedMotion: false,
@@ -83,16 +83,21 @@ export const userConfig: UserConfig = {
     defaultMode: 'dark',
   },
   hero: {
-    eyebrow: 'Portfolio personal / Material 3 motion system',
+    eyebrow: 'Portfolio personal',
     title: 'Hola, soy Angel Amarillas.',
     titleAccent: 'Angel Amarillas.',
-    subtitle: 'Senior UX/UI Designer & Developer',
+    subtitle: 'Full-Stack Developer',
     description:
-      'Diseno y desarrollo productos visuales con jerarquia fuerte, animaciones fluidas y sistemas que se sienten nativos tanto en movil como en desktop.',
+      'Desarrollador Full-Stack con experiencia en el desarrollo de aplicaciones web y móviles. Me gusta crear productos visuales con jerarquia fuerte, animaciones fluidas y sistemas que se sienten nativos tanto en movil como en desktop.',
     badges: [
-      { id: 'badge-motion', label: 'GSAP Motion' },
-      { id: 'badge-material', label: 'Material 3' },
-      { id: 'badge-adaptive', label: 'Adaptive UI' },
+      { id: 'badge-motion', label: 'React' },
+      { id: 'badge-material', label: 'Node.js' },
+      { id: 'badge-adaptive', label: 'TypeScript' },
+      { id: 'badge-adaptive', label: 'Python' },
+      { id: 'badge-adaptive', label: 'MongoDB' },
+      { id: 'badge-adaptive', label: 'Java' },
+      { id: 'badge-adaptive', label: 'Kotlin' },
+      { id: 'badge-adaptive', label: 'GO' },
     ],
     ctas: [
       {
@@ -141,21 +146,21 @@ export const userConfig: UserConfig = {
   socials: [
     { name: 'GitHub', url: 'https://github.com/theangel256', icon: 'github' },
     { name: 'LinkedIn', url: '#', icon: 'linkedin' },
-    { name: 'Twitter', url: '#', icon: 'twitter' },
+    { name: 'Twitter', url: 'https://x.com/Theangel256', icon: 'twitter' },
   ],
   projects: [
     {
-      id: 'proyecto-lunaris',
-      title: 'Proyecto LunarisAOSP',
+      id: 'proyecto-viper4windows-go',
+      title: 'Viper4Windows in GO',
       description:
-        'Interfaz Android con superficies limpias, color adaptable y transiciones disenadas para sentirse suaves en cada recorrido.',
-      image: 'https://i.imgur.com/blAotjz.jpeg',
-      tags: ['Android', 'Material You', 'UI/UX'],
-      link: '#',
+        'Interfaz shadcn/ui con superficies limpias, color adaptable y transiciones disenadas para sentirse suaves en cada recorrido.',
+      image: 'https://i.imgur.com/ax72v6s.png',
+      tags: ['GO', 'React', 'TypeScript'],
+      link: 'https://github.com/Theangel256/Viper4Windows/releases',
     },
     {
-      id: 'portfolio-v2',
-      title: 'Web Portfolio V2',
+      id: 'portfolio',
+      title: 'Web Portfolio',
       description:
         'Experiencia visual construida con Astro y GSAP que prioriza composicion, performance y una base modular lista para crecer.',
       image: 'https://i.imgur.com/QLhNj5X.png',
@@ -163,13 +168,13 @@ export const userConfig: UserConfig = {
       link: '#',
     },
     {
-      id: 'nexus-design',
-      title: 'Nexus System Design',
+      id: 'myspawn-plugin',
+      title: 'Myspawn',
       description:
         'Lenguaje visual para productos moviles con foco en accesibilidad, ritmo tipografico y consistencia entre pantallas.',
-      image: 'https://i.imgur.com/ezT5jUm.png',
-      tags: ['Figma', 'Design System'],
-      link: '#',
+      image: 'https://i.imgur.com/c4e8kjt.jpeg',
+      tags: ['Java', 'Minecraft'],
+      link: 'https://www.spigotmc.org/resources/myspawn.64762/',
     },
   ],
 };
